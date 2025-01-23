@@ -1,0 +1,49 @@
+
+import { Schema } from 'mongoose'
+
+export const CuponSchema = new Schema({
+    codigo:{
+        type: String,
+        require: true,
+        trim: true,
+    },
+    tipo:{
+        type: String,
+        require: true,
+        trim: true,
+    },
+    descuento:{
+        type: Number,
+        require: true,
+    },
+    fechaInicio:{
+        type: Date,
+        require: true,
+    },
+    fechaFin:{
+        type: Date,
+        require: true,
+    },
+    canjes:{
+        type: Number,
+        require: true,
+        default: 0
+    },
+    monto_max:{
+        type: Number,
+        require: true,
+        default: 1
+    },
+    estado:{
+        type: Boolean,
+        default:false
+    },
+    createdAT:{
+        type: Date,
+        default: Date.now
+    },
+    updatedAT:{
+        type: Date,
+        default: Date.now
+    }
+})
