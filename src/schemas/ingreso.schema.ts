@@ -19,6 +19,9 @@ export const IngresoSchema = new Schema({
         type:Number,
         required: true   
     },
+    tipo:{
+        type:String,
+    },
     codigo:{
         type:Number,
         required: true

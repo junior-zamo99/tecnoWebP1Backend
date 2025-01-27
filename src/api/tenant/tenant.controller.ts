@@ -19,7 +19,7 @@ export class TenantController {
 
         @Get('getTenants')
         
-        async getTenants(@Res()res, @Req() req){
+        async getTenants(@Res()res){
             const tenants=await this.tenantService.getTenants()
             res.status(200).send(tenants)
         }

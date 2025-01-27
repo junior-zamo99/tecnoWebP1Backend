@@ -84,4 +84,17 @@ export class VentaService {
             return {data:undefined, message:'no se pudo cambiar el estado de la venta'}
         }
     }
+
+    getVentasPorMes() {
+        return this.ventaModel.aggregate([
+            {
+                $group: {
+                    _id: { $month: "$createdAT" },
+                    total: { $sum: "$total" }
+                }
+            }
+        ])
+    }
+
+  
 }

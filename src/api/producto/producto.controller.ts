@@ -256,5 +256,48 @@ export class ProductoController {
         }
     }
 
+    @Get('getCupones/:codigo')
+    @UseGuards(AuthGuard)
+    async getCupones(@Res() res, @Req() req, @Param('codigo') codigo){
+        const cupones= await this._productoService.getCupones(codigo)
+        res.status(200).send(cupones)
+    }
 
+    @Get('getCupon/:id')
+    @UseGuards(AuthGuard)
+    async getCupon(@Res()res, @Req() req,@Param('id') id:any){
+        const cupon=await this._productoService.getCupon(id)
+        res.status(200).send(cupon)
+    }
+
+    @Put('updateCupon/:id')
+    @UseGuards(AuthGuard)
+    async updateCupon(@Res()res, @Req() req,@Param('id') id:any){
+        const data=req.body
+        const cupon=await this._productoService.updateCupon(id,data)
+        res.status(200).send(cupon)
+    }
+
+    @Get('getDetallesCupon/:id')
+    @UseGuards(AuthGuard)
+    async getDetallesCupon(@Res()res, @Req() req,@Param('id') id:any){
+        const detalles=await this._productoService.getDetallesCupon(id)
+        res.status(200).send(detalles)
+    }
+
+    @Post('addDetalleCupon')
+    @UseGuards(AuthGuard)
+    async addDetalleCupon(@Res()res, @Req() req){
+        const data=req.body
+        const detalle=await this._productoService.addDetalleCupon(data)
+        res.status(200).send(detalle)
+    }
+
+
+    @Delete('deleteCupon/:id')
+    @UseGuards(AuthGuard)
+    async deleteCupon(@Res()res, @Req() req,@Param('id') id:any){
+        const detalle=await this._productoService.deleteCupon(id)
+        res.status(200).send(detalle)
+    }
 }

@@ -14,6 +14,8 @@ import { VentaSchema } from 'src/schemas/ventas.schema';
 import { VentaDetalleSchema } from 'src/schemas/ventaDetalle.schema';
 import { IngresoSchema } from 'src/schemas/ingreso.schema';
 import { IngresoDetalleSchema } from 'src/schemas/ingresoDetalle.schema';
+import { CuponSchema } from 'src/schemas/cupon.schema';
+import { CuponDetalleSchema } from 'src/schemas/cupon_detalle.schema';
 
 @Module({
     imports:[
@@ -23,6 +25,10 @@ import { IngresoDetalleSchema } from 'src/schemas/ingresoDetalle.schema';
           {name:'carrito',schema:CarritoSchema},
           {name:'venta',schema:VentaSchema},
           {name:'ventaDetalle',schema:VentaDetalleSchema},
+          {name:'cupon',schema:CuponSchema},
+          {
+            name:'cupon_detalle', schema: CuponDetalleSchema
+        },
           {
             name:'ingreso', schema: IngresoSchema
         },

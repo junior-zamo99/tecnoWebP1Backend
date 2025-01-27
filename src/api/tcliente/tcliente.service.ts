@@ -17,7 +17,8 @@ export class TclienteService {
         @InjectModel('ventaDetalle') private readonly ventaDetalleModel,
         @InjectModel('ingreso') private readonly ingresoModel,
         @InjectModel('ingresoDetalle') private readonly ingresoDetalleModel,
-    
+        @InjectModel('cupon') private readonly cuponModel,
+        @InjectModel('cupon_detalle') private cuponDetalleModel
     ){}
 
     async createClienteTienda(data:any){
@@ -228,6 +229,70 @@ export class TclienteService {
         } catch (error) {
             console.log(error)
             return {data:undefined, message: 'error al obtener la venta'}
+        }
+    }
+
+
+    async aplicarCupon(codigo,data){
+        try {
+            console.log(data.categorias.length)
+            const cupon=await this.cuponModel.findOne({codigo:codigo})
+            const today= new Date().getTime()
+            console.log(cupon)
+            if(cupon){
+                const detalles=await this.cuponDetalleModel.find({cupon:cupon._id}).populate('categoria')
+                const tt_inicio= new Date(cupon.f_inicio).getTime()
+                const tt_fin= new Date(cupon.f_fin).getTime()
+                console.log(detalles)
+
+                if(today>=tt_inicio && today<=tt_fin){
+                    if(data.total <= cupon.monto_max){
+                        if(cupon.tipo=="General"){
+                            return {data:cupon, message: 'cupon aplicado'}
+                        }else if(cupon.tipo=="Categoria"){
+                            let count=0
+                            
+                            for(const cat of data.categorias){
+                                const reg=detalles.filter((item)=>item.categoria._id==cat)
+                                if(reg.length>0){
+                                    count++
+                                }
+                                
+                            }
+                            console.log(count)
+                            if(count == data.categorias.length){
+                                return {data:cupon, message: 'cupon aplicado'}
+                            }else{
+                                return {data:undefined, message: 'el cupon no aplica a las categorias seleccionadas'}
+                            }
+                        }else if(cupon.tipo=="Producto"){
+                            let count=0
+                            
+                            for(const prod of data.productos){
+                                const reg=detalles.filter((item)=>item.producto==prod)
+                                if(reg.length>0){
+                                    count++
+                                }
+                                
+                            }
+                            if(count == data.productos.length){
+                                return {data:cupon, message: 'cupon aplicado'}
+                            }else{
+                                return {data:undefined, message: 'el cupon no aplica a los productos seleccionados'}
+                            }
+                        }
+                    }else{
+                        return {data:undefined, message: 'el monto del cupon es mayor al total de la compra'}
+                    }
+                }else{
+                    return {data:undefined, message: 'el cupon ha expirado'}
+                }    
+               
+            }else{
+                return {data:undefined, message: 'el cupon no existe'}
+            }
+        } catch (error) {
+            return {data:undefined, message: 'error al aplicar el cupon'}
         }
     }
 }

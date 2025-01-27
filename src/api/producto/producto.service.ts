@@ -369,7 +369,9 @@ export class ProductoService {
     }
 
     async crearCupon(data:any){
-        try {
+        try {   
+                data.f_inicio=new Date(data.f_inicio+'T00:00:00')
+                data.f_fin=new Date(data.f_fin+'T23:59:59')
                 const existeCupon=await this.cuponModel.find({codigo:data.codigo})
                 if(existeCupon.length>=1){
                     return{data:undefined, message:'el cupon ya esta registrado'}
@@ -385,6 +387,123 @@ export class ProductoService {
             
         } catch (error) {
             return{data:undefined, message:'no se pudo crear el cupon'}
+        }
+    }
+
+
+    async getCupones(codigo:any){
+        try {
+            if(codigo=='Todos'){
+                const cupones=await this.cuponModel.find().sort({createdAT:-1})
+                return {data:cupones}
+            }else{
+                const cupones=await this.cuponModel.find({codigo:codigo}).sort({createdAT:-1})
+                return {data:cupones}
+            }
+        } catch (error) {
+            console.log(error)
+            return{data:undefined, message:'no se pudo obtener los cupones'}
+        }
+    }
+
+    async getCupon(id){
+        try {   
+            const cupon = await this.cuponModel.findOne({_id:id});
+
+            if(cupon){
+                return {data:cupon}
+            }else{
+                return {data:undefined}
+            }
+        } catch (error) {
+            return { data: undefined, message:'No se pudo obtener el cupon.' }
+        }
+    }
+
+    async updateCupon(id,data){
+        try {   
+            const cupon = await this.cuponModel.findOne({_id:id});
+
+            if(cupon){
+
+                const reg = await this.cuponModel.findOneAndUpdate({_id:id},{
+                    codigo: data.codigo,
+                    descuento: data.descuento,
+                    monto_max: data.monto_max,
+                    canjes: data.canjes,
+                    f_inicio: data.f_inicio+'T00:00:00',
+                    f_fin: data.f_fin+'T23:59:59'
+                });
+
+                return {data:reg}
+            }else{
+                return {data:undefined}
+            }
+        } catch (error) {
+            return { data: undefined, message:'No se pudo actualizar el cupon.' }
+        }
+    }
+
+
+    async getDetallesCupon(id){
+        try {   
+            const cupon = await this.cuponModel.findOne({_id:id});
+
+            if(cupon){
+                const detalles = await this.cuponDetalleModel.find({cupon:id}).populate('producto').populate('categoria');
+                return {data:detalles}
+            }else{
+                return {data:undefined}
+            }
+        } catch (error) {
+            return { data: undefined, message:'No se pudo obtener el cupon.' }
+        }
+    }   
+
+    async addDetalleCupon(data){
+        try {   
+            const cupon = await this.cuponModel.findOne({_id:data.cupon});
+
+            if(cupon){
+                let validate = false; //FALSE => NO SE PUEDE AGREGAR | TRUE => SI SE PUEDE
+
+                if(cupon.tipo == 'Producto'){
+                    const reg = await this.cuponDetalleModel.find({cupon:cupon._id,producto:data.producto});
+
+                    if(reg.length == 0) validate = true;
+                }else if(cupon.tipo == 'Categoria'){
+                    const reg = await this.cuponDetalleModel.find({cupon:cupon._id,categoria:data.categoria});
+
+                    if(reg.length == 0) validate = true;
+                }
+                
+                if(validate){
+                    const detalle = await this.cuponDetalleModel.create(data);
+                    return {data:detalle}
+                }else{
+                    return { data: undefined, message:'El detalle ya existe en el cupón.' }
+                }
+            }else{
+                return {data:undefined}
+            }
+        } catch (error) {
+            return { data: undefined, message:'No se pudo agregar el detalle.' }
+        }
+    }
+
+    async deleteCupon(id){
+        try {   
+            const detalle = await this.cuponDetalleModel.findOne({_id:id});
+
+            if(detalle){
+                const reg = await this.cuponDetalleModel.findByIdAndDelete(id);
+                return {data:reg}
+            }else{
+                return {data:undefined}
+            }
+        } catch (error) {
+            
+            return { data: undefined, message:'No se pudo eliminar el detalle.' }
         }
     }
 }

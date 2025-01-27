@@ -98,6 +98,12 @@ export class TclienteController {
         return res.status(200).send(carrito)
     }
     
+    @Put('aplicarCupon/:codigo')
+    async aplicarCupon(@Res()res, @Req() req,@Param('codigo') codigo:any){
+        const data=req.body
+        const carrito=await this.tclienteService.aplicarCupon(codigo,data)
+        return res.status(200).send(carrito)
+    }
 
 }
 

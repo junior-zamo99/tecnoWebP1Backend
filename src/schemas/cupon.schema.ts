@@ -16,11 +16,11 @@ export const CuponSchema = new Schema({
         type: Number,
         require: true,
     },
-    fechaInicio:{
+    f_fin:{
         type: Date,
         require: true,
     },
-    fechaFin:{
+    f_inicio:{
         type: Date,
         require: true,
     },

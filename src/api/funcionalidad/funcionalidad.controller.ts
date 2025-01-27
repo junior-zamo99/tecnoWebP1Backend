@@ -70,6 +70,19 @@ export class FuncionalidadController {
             {nombre:'gestionar ventas ',descripcion:'permite gestionar las ventas',tipo:1})
         await this.funcionalidadService.createFuncionalidad(
             {nombre:'crear venta ',descripcion:'permite crear una venta',tipo:1})
+        await this.funcionalidadService.createFuncionalidad(
+            {nombre:'crear proveedor ',descripcion:'permite crear un proveedor',tipo:1})
+        await this.funcionalidadService.createFuncionalidad(
+            {nombre:'actualizar proveedor ',descripcion:'permite actualizar un proveedor',tipo:1})
+        await this.funcionalidadService.createFuncionalidad(
+            {nombre:'gestionar proveedores ',descripcion:'permite gestionar los proveedores',tipo:1})
+        await this.funcionalidadService.createFuncionalidad(
+            {nombre:'gestionar almacen ',descripcion:'permite gestionar los almacenes',tipo:1})
+        await this.funcionalidadService.createFuncionalidad(
+            {nombre:'crear almacen ',descripcion:'permite crear un almacen',tipo:1})
+        await this.funcionalidadService.createFuncionalidad(
+            {nombre:'detalles de venta ',descripcion:'permite ver los detalles de una venta',tipo:1})
+            
             
         
             
