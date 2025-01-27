@@ -82,6 +82,13 @@ export class FuncionalidadController {
             {nombre:'crear almacen ',descripcion:'permite crear un almacen',tipo:1})
         await this.funcionalidadService.createFuncionalidad(
             {nombre:'detalles de venta ',descripcion:'permite ver los detalles de una venta',tipo:1})
+        await this.funcionalidadService.createFuncionalidad(
+            {nombre:'gestionar cupon',descripcion:'permite gestionar los cupones',tipo:1})
+        await this.funcionalidadService.createFuncionalidad(
+            {nombre:'crear cupon',descripcion:'permite crear un cupon',tipo:1})
+        await this.funcionalidadService.createFuncionalidad(
+            {nombre:'actualizar cupon',descripcion:'permite actualizar un cupon',tipo:1})
+        
             
             
         

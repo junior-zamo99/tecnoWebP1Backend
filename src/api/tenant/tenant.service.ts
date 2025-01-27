@@ -41,7 +41,7 @@ export class TenantService {
                 funcionalidades.push(funcionalidad[i]._id);
             }
     
-            let rolE = await this.rolModel.findOne({ nombre: 'administrador', tenant: tenant._id });
+            let rolE = await this.rolModel.findOne({ nombre: 'administrador' });
             if (!rolE) {
                 rolE = await this.rolModel.create({
                     tenant: tenant._id,
